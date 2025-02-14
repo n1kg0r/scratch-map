@@ -124,29 +124,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column align-items-center justify-content-center">
-        <!-- Bootstrap Carousel -->
-        <div id="galleryCarousel" class="carousel slide w-100" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img  class="rounded" alt="Photo 1">
-                </div>
-                <div class="carousel-item">
-                    <img  class="rounded" alt="Photo 2">
-                </div>
-                <div class="carousel-item">
-                    <img  class="rounded" alt="Photo 3">
-                </div>
+        <div class="offcanvas-body d-flex flex-column align-items-center justify-content-center" style="width: 100%; overflow: hidden;">
+            <div id="photoContainer" class="d-flex overflow-auto" style="flex-direction: row; gap: 3rem; max-width: 100%; overflow-x: auto;">
+                <!-- Dynamic images will be added here -->
             </div>
-            <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
         </div>
     </div>
-    
+
 </div>
 
 
@@ -294,11 +278,12 @@ loadUnlockedCountries().then(() => {
 
         function loadCountryImages(countryName) {
             const folderPath = `photos/${countryName}/`;
-            
-            // Try fetching a known image file to check if the folder exists
+        
+            // Try to check if any images exist by fetching the first image
             fetch(folderPath + "img1.jpg")
                 .then(response => {
                     if (response.ok) {
+                        // If the first image exists, proceed to fetch all images
                         fetchImagesFromFolder(folderPath);
                     } else {
                         showFallbackMessage();
@@ -306,45 +291,50 @@ loadUnlockedCountries().then(() => {
                 })
                 .catch(() => showFallbackMessage());
         }
-
+        
         function fetchImagesFromFolder(folderPath) {
-            const imageExtensions = [".jpg"];
-            const carouselInner = document.querySelector("#galleryCarousel .carousel-inner");
+            // Here we would need a server-side solution to get the list of images from a folder
+            // For simplicity, let's assume we have an array of image names for now
+            const imageNames = [
+            'img1.jpg', 'img2.jpg', 'img3.jpg',
+            'img4.jpg', 'img5.jpg', 'img6.jpg']; // Replace with dynamic fetching from the server
         
-            carouselInner.innerHTML = ""; // Clear previous images
+            // Clear the photo container first
+            const photoContainer = document.getElementById("photoContainer");
+            photoContainer.innerHTML = '';
         
-            let imagesLoaded = 0;
+            // Add images to the container
+            imageNames.forEach(imageName => {
+                const imageUrl = folderPath + imageName;
+                const imgElement = document.createElement("img");
+                imgElement.src = imageUrl;
+                imgElement.alt = `Photo from ${folderPath}`;
+                imgElement.classList.add("rounded");
+                imgElement.style.maxHeight = "20rem"; // Adjust based on your layout
+                imgElement.style.width = "auto";
+                 // Set up the onerror handler for the image
+                imgElement.onerror = function() {
+                    imgElement.style.display = 'none'; // Hide the image if it fails to load
+                };
         
-            imageExtensions.forEach((ext, index) => {
-                const imgUrl = `${folderPath}img${index + 1}${ext}`;
-        
-                fetch(imgUrl)
-                    .then(response => {
-                        if (response.ok) {
-                            const slideClass = imagesLoaded === 0 ? "carousel-item active" : "carousel-item";
-                            carouselInner.innerHTML += `
-                                <div class="${slideClass}">
-                                    <img src="${imgUrl}" class="rounded" alt="Photo">
-                                </div>
-                            `;
-                            imagesLoaded++;
-                        }
-                    })
-                    .catch(() => {});
+                // Append the image to the container
+                photoContainer.appendChild(imgElement);
             });
-        
-            // If no images are found, show fallback after a delay
-            setTimeout(() => {
-                if (imagesLoaded === 0) {
-                    showFallbackMessage();
-                }
-            }, 1000);
+            function handleError(image) {
+                image.style.display = 'none'; // Hide the image if it fails to load
+            }
+            // Add an empty frame with a plus icon at the end for adding new photos
+            const addImageFrame = document.createElement("div");
+            addImageFrame.classList.add("add-photo-frame");
+           // addImageFrame.innerHTML = '<span class="plus-icon">+</span>'; // Replace with a real plus icon or style
+            photoContainer.appendChild(addImageFrame);
         }
         
         function showFallbackMessage() {
-            document.querySelector("#galleryCarousel .carousel-inner").innerHTML = 
-                `<p class="text-center fw-bold my-4">No photos available for this country.</p>`;
+            // Show a message if the folder doesn't exist or no images are found
+            alert("No photos found for this country.");
         }
+        
 
 
 
