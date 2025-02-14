@@ -87,6 +87,33 @@
     </style>
 </head>
 <body>
+
+    <div class="modal fade" id="startModal" tabindex="-1" aria-labelledby="startModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center" style="background-color: #ff66b2; border-bottom: 2px solid #ff3385;">
+                    <h5 class="modal-title" id="startModalLabel" style="color: #fff; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.5rem;">Фотоальбомгессер</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" style="background-color: #fff7f9; color: #ff3385;">
+                    <p style="font-size: 1.2rem; font-family: 'Roboto', sans-serif;">Кате на 14 февраля</p>
+                    <p style="font-size: 1.5rem; font-weight: 700;">С любовью от Коли ❤️</p>
+                </div>
+                <div class="modal-footer text-center" style="border-top: 2px solid #ff3385;">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="font-weight: bold; text-transform: uppercase;">Ура ❤️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+      <script>
+        // Show the modal on page load
+        window.onload = () => {
+          var myModal = new bootstrap.Modal(document.getElementById('startModal'));
+          myModal.show();
+        };
+      </script>
     
     <button id="switch-btn">Switch to Globe</button>
     <svg id="my_dataviz"></svg>
