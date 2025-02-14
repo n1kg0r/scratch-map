@@ -45,6 +45,45 @@
         svg {
             display: block;
         }
+
+        /* Make the offcanvas take half the height of the window */
+#photoGallery {
+    height: 30rem; /* 50% of the viewport height */
+    min-height: fit-content;
+    max-height: 60%;
+}
+
+/* Set the carousel width to 50rem and ensure images fit */
+#galleryCarousel {
+    width: 5rem;
+    height: 100%;
+}
+
+#galleryCarousel .carousel-inner .carousel-item {
+    height: 100%;
+}
+
+#galleryCarousel .carousel-inner .carousel-item img {
+    max-height: 20rem;
+    height: 100%;
+    width: auto;
+}
+
+#galleryCarousel .carousel-inner {
+    height: 100%;
+}
+#galleryCarousel .carousel-inner .carousel-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Optionally, center the carousel horizontally */
+#galleryCarousel {
+    margin: 0 auto;
+}
+
     </style>
 </head>
 <body>
@@ -84,18 +123,18 @@
         <h5 id="galleryCountryName" class="fw-bold">Country Name</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body d-flex flex-column align-items-center">
+    <div class="offcanvas-body d-flex flex-column align-items-center justify-content-center">
         <!-- Bootstrap Carousel -->
         <div id="galleryCarousel" class="carousel slide w-100" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="https://via.placeholder.com/600x300" class="d-block w-100 rounded" alt="Photo 1">
+                    <img  class="rounded" alt="Photo 1">
                 </div>
                 <div class="carousel-item">
-                    <img src="https://via.placeholder.com/600x300" class="d-block w-100 rounded" alt="Photo 2">
+                    <img  class="rounded" alt="Photo 2">
                 </div>
                 <div class="carousel-item">
-                    <img src="https://via.placeholder.com/600x300" class="d-block w-100 rounded" alt="Photo 3">
+                    <img  class="rounded" alt="Photo 3">
                 </div>
             </div>
             <!-- Controls -->
@@ -107,6 +146,7 @@
             </button>
         </div>
     </div>
+    
 </div>
 
 
@@ -268,7 +308,7 @@ loadUnlockedCountries().then(() => {
         }
 
         function fetchImagesFromFolder(folderPath) {
-            const imageExtensions = [".jpg", ".png", ".jpeg", ".webp"];
+            const imageExtensions = [".jpg"];
             const carouselInner = document.querySelector("#galleryCarousel .carousel-inner");
         
             carouselInner.innerHTML = ""; // Clear previous images
@@ -284,7 +324,7 @@ loadUnlockedCountries().then(() => {
                             const slideClass = imagesLoaded === 0 ? "carousel-item active" : "carousel-item";
                             carouselInner.innerHTML += `
                                 <div class="${slideClass}">
-                                    <img src="${imgUrl}" class="d-block w-100 rounded" alt="Photo">
+                                    <img src="${imgUrl}" class="rounded" alt="Photo">
                                 </div>
                             `;
                             imagesLoaded++;
